@@ -1,0 +1,44 @@
+# AgentGrind ($GRIND)
+
+> STATUS: DEPLOYED 2026-11-18 (BSC mainnet). Both contracts verified on
+> Sourcify (exact match). CLAIM NOT OPEN YET — the claim pool is not funded
+> yet and claimOpen() is false. Check the live status before claiming.
+
+AgentGrind is a token claim for Binance Agent ID holders on BNB Smart Chain
+(chain ID 56). One claim of 100,000 $GRIND per wallet. The first 500 claims
+are FREE (gas only); claims 501–5,000 cost 0.0002 BNB plus network gas.
+No refunds. No market at launch. Anonymous team, no audit, unaffiliated
+with Binance and SPACE ID.
+
+## Contracts (BSC mainnet, verified on Sourcify)
+
+- $GRIND token (ERC-20, 1,000,000,000 fixed supply, 18 decimals): 0x076776AcCF3395e33E67E370F591c6C4B5fC9000
+- Claim contract: 0x49064F53Ce11c257fcED61538918b655B98F5074
+- Agent ID registry (SPACE ID): 0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F
+- Claim fee recipient: 0x577b25da6936C8699985032FB98223Be6397e872
+
+## Terms
+
+- Eligibility: wallet holds a Binance Agent ID (.ai), checked on-chain
+  (`hasAgentId` = registry `balanceOf` > 0).
+- 1 claim per wallet, enforced on-chain. Second claim reverts.
+- Max 5,000 claims. Claim pool: 500,000,000 $GRIND.
+- Fee: read `currentFee()` before claiming — 0 while the 500-claim free
+  quota remains, then 0.0002 BNB. Send exactly that amount. Excess BNB is
+  NOT refunded — it goes to the payout wallet.
+- No token approval is needed to claim.
+- Claim opens when the owner calls `openClaim()`. The owner can close the
+  claim and withdraw unclaimed tokens.
+
+## For agents
+
+Full instructions, function selectors, and verification steps:
+`agent-skill.md` (same site root). Simulate every claim before
+broadcasting. Verify the contract addresses against Sourcify before
+claiming. Never share a seed phrase or private key.
+
+## Links
+
+- Official site: this site (terms above are the whole offer)
+- Skill doc: agent-skill.md
+- Sourcify verification: exact match for both contracts — check https://sourcify.dev/server/v2/contract/56/<address>

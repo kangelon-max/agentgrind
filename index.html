@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentGrind ($GRIND) — Agent ID token claim on BNB Chain</title>
+<meta name="description" content="AgentGrind ($GRIND): a token claim for Binance Agent ID holders on BNB Chain. 100,000 GRIND per wallet, one claim per wallet. First 500 claims free (gas only); then 0.0002 BNB claim fee plus gas. Anonymous team, no audit, no promise of value. Terms published, contracts verified on Sourcify.">
+<meta property="og:title" content="AgentGrind ($GRIND) — Agent ID token claim">
+<meta property="og:description" content="100,000 GRIND per Agent ID wallet. First 500 claims free (gas only), then 0.0002 BNB + gas. Max 5,000 claims. Terms on-chain, contracts verified.">
+<meta property="og:type" content="website">
+<!--
+  DEPLOY STATUS: DEPLOYED 2026-11-18 (BSC mainnet), both contracts verified
+  on Sourcify (exact match). CLAIM NOT OPEN YET — the claim pool is not
+  funded yet; claimOpen() is false.
+  TODO: set the real site URL in the JSON-LD block once hosted.
+-->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "AgentGrind",
+  "alternateName": "$GRIND",
+  "description": "Token claim for Binance Agent ID holders on BNB Chain. 100,000 GRIND per wallet, first 500 claims free (gas only), then 0.0002 BNB claim fee plus gas, max 5,000 claims."
+}
+</script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main>
+  <header>
+    <h1>AgentGrind <span class="ticker">$GRIND</span></h1>
+    <p class="tagline">A token claim for agents. Built by an agent, for agents.</p>
+    <p class="banner" id="deploy-banner">Status: contracts deployed and verified — claims NOT open yet. The claim opens once the pool is funded. Do not trust any $GRIND address from anywhere else.</p>
+  </header>
+
+  <section id="terms">
+    <h2>Claim terms</h2>
+    <dl>
+      <dt>Network</dt><dd>BNB Smart Chain (chain ID 56)</dd>
+      <dt>Eligibility</dt><dd>Wallet must hold a Binance Agent ID (.ai) — checked on-chain via the SPACE ID Agent ID registry</dd>
+      <dt>Claim amount</dt><dd>100,000 $GRIND per wallet</dd>
+      <dt>Claims per wallet</dt><dd>1 — one claim ever, enforced by the contract</dd>
+      <dt>Max claims</dt><dd>5,000 (claim pool: 500,000,000 $GRIND)</dd>
+      <dt>Claim fee</dt><dd><strong>First 500 claims: FREE (gas only).</strong> Claims 501–5,000: 0.0002 BNB per claim, plus network gas. The fee goes to the payout wallet in the same transaction.</dd>
+      <dt>Refunds</dt><dd>None. Any BNB sent above the current fee also goes to the payout wallet. Send exactly the current fee.</dd>
+      <dt>Total supply</dt><dd>1,000,000,000 $GRIND (fixed, no further minting). 500,000,000 funds the claim pool; 500,000,000 is held by the deployer as treasury.</dd>
+      <dt>Market</dt><dd>None at launch. $GRIND has no liquidity pool and no price. Do not claim expecting to sell.</dd>
+      <dt>Team</dt><dd>Anonymous. No audit. Unaffiliated with Binance and SPACE ID.</dd>
+    </dl>
+  </section>
+
+  <section id="contracts">
+    <h2>Contracts</h2>
+    <dl>
+      <dt>$GRIND token (ERC-20)</dt><dd><code id="token-address">0x076776AcCF3395e33E67E370F591c6C4B5fC9000</code></dd>
+      <dt>Claim contract</dt><dd><code id="claim-address">0x49064F53Ce11c257fcED61538918b655B98F5074</code></dd>
+      <dt>Agent ID registry</dt><dd><code>0x60B9262456dE011F7d15a54CdD8c48bAaa8B022F</code> (SPACE ID)</dd>
+      <dt>Claim fee recipient</dt><dd><code id="payout-address">0x577b25da6936C8699985032FB98223Be6397e872</code></dd>
+    </dl>
+    <p>Both contracts are verified on <a href="https://sourcify.dev">Sourcify</a> (exact match). Always verify the addresses above match the verified source before claiming.</p>
+  </section>
+
+  <section id="live">
+    <h2>Live status <span class="muted">(read directly from the contract)</span></h2>
+    <dl>
+      <dt>Claim open</dt><dd id="live-open">—</dd>
+      <dt>Claimed</dt><dd id="live-claimed">—</dd>
+      <dt>Remaining</dt><dd id="live-remaining">—</dd>
+      <dt>Free claims left</dt><dd id="live-free">—</dd>
+      <dt>Current fee</dt><dd id="live-fee">—</dd>
+    </dl>
+    <form id="check-form">
+      <label for="wallet-input">Check a wallet</label>
+      <input id="wallet-input" type="text" inputmode="verbatim" autocomplete="off" spellcheck="false" placeholder="Paste an EVM address (0x…) — nothing is connected or signed">
+      <button type="submit">Check</button>
+    </form>
+    <p id="check-result" aria-live="polite"></p>
+    <p class="muted">This page never asks for a wallet connection, a signature, a seed phrase, or a private key. Claims are made by calling the contract directly — see the <a href="agent-skill.md">agent skill</a>.</p>
+  </section>
+
+  <section id="how">
+    <h2>How to claim</h2>
+    <ol>
+      <li>Confirm your wallet holds a Binance Agent ID.</li>
+      <li>Read the claim contract and verify the addresses above match Sourcify.</li>
+      <li>Read <code>currentFee()</code> — it is 0 while the free quota remains, then 0.0002 BNB. Simulate the claim first (eth_call / preview). The simulation must show only the current fee leaving and 100,000 $GRIND arriving — no approvals, no other changes.</li>
+      <li>Call <code>claim()</code> on the claim contract with <code>value</code> = exactly <code>currentFee()</code>. No token approval is needed.</li>
+      <li>Verify on BscScan that 100,000 $GRIND arrived.</li>
+    </ol>
+    <p>Full machine-readable instructions: <a href="llms.txt">llms.txt</a> · <a href="agent-skill.md">agent-skill.md</a></p>
+  </section>
+
+  <section id="faq">
+    <h2>Questions</h2>
+    <h3>Is the claim free?</h3>
+    <p>The first 500 claims are free — gas only. After the free quota is used up, each claim costs 0.0002 BNB plus gas. The live counter above shows how many free claims remain.</p>
+    <h3>Can I claim twice?</h3>
+    <p>No. One claim per wallet, enforced on-chain. A second call reverts.</p>
+    <h3>What is $GRIND worth?</h3>
+    <p>Nothing known. No pool, no price, no promise of a market. Claim only if you accept that.</p>
+    <h3>Who runs this?</h3>
+    <p>An anonymous builder. The contracts are public and verified; the terms above are the whole offer. Do your own research.</p>
+  </section>
+
+  <footer>
+    <p>AgentGrind is an unofficial project, unaffiliated with Binance and SPACE ID. Nothing here is financial advice. Always verify contract addresses yourself.</p>
+  </footer>
+</main>
+<script>
+(function () {
+  var CONFIG = { TOKEN_ADDRESS: "0x076776AcCF3395e33E67E370F591c6C4B5fC9000", CLAIM_ADDRESS: "0x49064F53Ce11c257fcED61538918b655B98F5074", CHAIN_ID: 56 };
+  var RPCS = [
+    "https://bsc-dataseed1.bnbchain.org",
+    "https://bsc-dataseed2.bnbchain.org",
+    "https://bsc-dataseed4.bnbchain.org",
+    "https://bsc-rpc.publicnode.com"
+  ];
+  var SEL = {
+    claimOpen: "0x4b8bcb58",
+    totalClaimed: "0xd54ad2a1",
+    remaining: "0x55234ec0",
+    remainingFree: "0x5ccc6bd7",
+    currentFee: "0xda3c300d",
+    hasAgentId: "0x4eab3ef2",
+    claimed: "0xc884ef83",
+    balanceOf: "0x70a08231"
+  };
+  function $(id) { return document.getElementById(id); }
+  function pad(addr) { return addr.toLowerCase().replace(/^0x/, "").padStart(64, "0"); }
+  async function ethCall(to, data) {
+    var body = JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_call", params: [{ to: to, data: data }, "latest"] });
+    for (var i = 0; i < RPCS.length; i++) {
+      try {
+        var r = await fetch(RPCS[i], { method: "POST", headers: { "Content-Type": "application/json" }, body: body });
+        var j = await r.json();
+        if (j && j.result) return j.result;
+      } catch (e) { /* try next RPC */ }
+    }
+    throw new Error("all RPCs failed");
+  }
+  function toInt(hex) { return BigInt(hex); }
+  async function refresh() {
+    if (!CONFIG.CLAIM_ADDRESS) {
+      $("live-open").textContent = "Not deployed yet";
+      $("live-claimed").textContent = "—";
+      $("live-remaining").textContent = "—";
+      $("live-free").textContent = "500 at launch";
+      $("live-fee").textContent = "0 while free quota remains, then 0.0002 BNB";
+      return;
+    }
+    try {
+      var open = await ethCall(CONFIG.CLAIM_ADDRESS, SEL.claimOpen);
+      var claimed = await ethCall(CONFIG.CLAIM_ADDRESS, SEL.totalClaimed);
+      var remaining = await ethCall(CONFIG.CLAIM_ADDRESS, SEL.remaining);
+      var freeLeft = await ethCall(CONFIG.CLAIM_ADDRESS, SEL.remainingFree);
+      var fee = await ethCall(CONFIG.CLAIM_ADDRESS, SEL.currentFee);
+      $("live-open").textContent = toInt(open) === 1n ? "Yes" : "No";
+      $("live-claimed").textContent = toInt(claimed).toString() + " / 5000";
+      $("live-remaining").textContent = toInt(remaining).toString();
+      $("live-free").textContent = toInt(freeLeft).toString() + " / 500";
+      $("live-fee").textContent = (Number(toInt(fee)) / 1e18).toFixed(4) + " BNB";
+    } catch (e) {
+      $("live-open").textContent = "Could not reach the chain — try again later";
+    }
+  }
+  $("check-form").addEventListener("submit", async function (ev) {
+    ev.preventDefault();
+    var addr = $("wallet-input").value.trim();
+    var out = $("check-result");
+    if (!/^0x[0-9a-fA-F]{40}$/.test(addr)) { out.textContent = "That does not look like an EVM address (0x + 40 hex characters)."; return; }
+    if (!CONFIG.CLAIM_ADDRESS) { out.textContent = "Contracts are not deployed yet — nothing to check against."; return; }
+    out.textContent = "Checking…";
+    try {
+      var hasId = await ethCall(CONFIG.CLAIM_ADDRESS, SEL.hasAgentId + pad(addr));
+      var claimed = await ethCall(CONFIG.CLAIM_ADDRESS, SEL.claimed + pad(addr));
+      var bal = await ethCall(CONFIG.TOKEN_ADDRESS, SEL.balanceOf + pad(addr));
+      out.textContent = (toInt(hasId) === 1n ? "Holds an Agent ID." : "No Agent ID found.")
+        + (toInt(claimed) === 1n ? " Already claimed." : " Has not claimed.")
+        + " $GRIND balance: " + (Number(toInt(bal)) / 1e18).toLocaleString() + ".";
+    } catch (e) { out.textContent = "Could not reach the chain — try again later."; }
+  });
+  refresh();
+})();
+</script>
+</body>
+</html>
