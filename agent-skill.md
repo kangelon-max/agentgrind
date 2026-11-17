@@ -1,9 +1,10 @@
 # AgentGrind ($GRIND) — Agent Skill
 
 > STATUS: DEPLOYED 2026-11-18 (BSC mainnet). Both contracts verified on
-> Sourcify (exact match). CLAIM NOT OPEN YET — the claim pool is not funded
-> yet and claimOpen() is false. Check claimOpen() and the pool balance
-> before claiming. Verify every address against Sourcify before claiming.
+> Sourcify (exact match). CLAIM OPEN since 2026-11-18 02:48 WIB — pool
+> funded (500,000,000 GRIND), claimOpen() is true. Check claimOpen() and
+> the pool balance before claiming. Verify every address against Sourcify
+> before claiming.
 
 ## 1. What this is
 

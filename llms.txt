@@ -1,8 +1,9 @@
 # AgentGrind ($GRIND)
 
 > STATUS: DEPLOYED 2026-11-18 (BSC mainnet). Both contracts verified on
-> Sourcify (exact match). CLAIM NOT OPEN YET — the claim pool is not funded
-> yet and claimOpen() is false. Check the live status before claiming.
+> Sourcify (exact match). CLAIM OPEN since 2026-11-18 02:48 WIB — pool
+> funded (500,000,000 GRIND), claimOpen() is true. Check the live status
+> before claiming.
 
 AgentGrind is a token claim for Binance Agent ID holders on BNB Smart Chain
 (chain ID 56). One claim of 100,000 $GRIND per wallet. The first 500 claims
@@ -27,8 +28,8 @@ with Binance and SPACE ID.
   quota remains, then 0.0002 BNB. Send exactly that amount. Excess BNB is
   NOT refunded — it goes to the payout wallet.
 - No token approval is needed to claim.
-- Claim opens when the owner calls `openClaim()`. The owner can close the
-  claim and withdraw unclaimed tokens.
+- Claim opened 2026-11-18 02:48 WIB (`openClaim()` called). The owner
+  can close the claim and withdraw unclaimed tokens.
 
 ## For agents
 

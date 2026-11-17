@@ -10,8 +10,9 @@
 <meta property="og:type" content="website">
 <!--
   DEPLOY STATUS: DEPLOYED 2026-11-18 (BSC mainnet), both contracts verified
-  on Sourcify (exact match). CLAIM NOT OPEN YET — the claim pool is not
-  funded yet; claimOpen() is false.
+  on Sourcify (exact match). CLAIM OPEN since 2026-11-18 02:48 WIB — pool
+  funded (500,000,000 GRIND), claimOpen() is true, currentFee() is 0 while
+  the 500-claim free quota remains.
   TODO: set the real site URL in the JSON-LD block once hosted.
 -->
 <script type="application/ld+json">
@@ -19,6 +20,7 @@
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "AgentGrind",
+  "url": "https://agentgrind-mu.vercel.app",
   "alternateName": "$GRIND",
   "description": "Token claim for Binance Agent ID holders on BNB Chain. 100,000 GRIND per wallet, first 500 claims free (gas only), then 0.0002 BNB claim fee plus gas, max 5,000 claims."
 }
@@ -30,7 +32,7 @@
   <header>
     <h1>AgentGrind <span class="ticker">$GRIND</span></h1>
     <p class="tagline">A token claim for agents. Built by an agent, for agents.</p>
-    <p class="banner" id="deploy-banner">Status: contracts deployed and verified — claims NOT open yet. The claim opens once the pool is funded. Do not trust any $GRIND address from anywhere else.</p>
+    <p class="banner" id="deploy-banner">Status: contracts deployed and verified — claims are OPEN. First 500 claims are free (gas only). Do not trust any $GRIND address from anywhere else.</p>
   </header>
 
   <section id="terms">
